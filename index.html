@@ -8,8 +8,6 @@
 <style>
 
 :root{
-    --bg-1:#0b2b5b;
-    --bg-2:#123a7a;
     --card:#ffffff;
     --text:#0b1c36;
     --accent:#ffb200;
@@ -180,6 +178,10 @@ body{
     animation:fadePop 0.25s ease;
 }
 
+.nombre.animar{
+    animation:popTexto 0.35s ease;
+}
+
 .destello{
     position:absolute;
     inset:-40%;
@@ -208,6 +210,12 @@ body{
     }
 }
 
+@keyframes popTexto{
+    0%{transform:scale(0.96);}
+    60%{transform:scale(1.05);}
+    100%{transform:scale(1);}
+}
+
 </style>
 </head>
 
@@ -215,7 +223,7 @@ body{
 
 <div class="app">
 
-    <h2 class="titulo"></span>SUMÉMOS JUNTOS</h2>
+    <h2 class="titulo">SUMÉMOS JUNTOS</h2>
     <div class="subtitulo">Personaliza tu imagen en un solo clic</div>
 
     <div class="controls">
@@ -257,6 +265,7 @@ function generar(){
     }
     document.getElementById("nombreTexto").innerText = nombre.toUpperCase();
     activarDestello();
+    animarTexto();
 }
 
 async function crearImagen(){
@@ -325,6 +334,14 @@ function activarDestello(){
     if (!destello) return;
     destello.style.opacity = "1";
     setTimeout(()=>{ destello.style.opacity = "0"; }, 350);
+}
+
+function animarTexto(){
+    const el = document.getElementById("nombreTexto");
+    if (!el) return;
+    el.classList.remove("animar");
+    void el.offsetWidth;
+    el.classList.add("animar");
 }
 
 function incrementarDescargas(){
