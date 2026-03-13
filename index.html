@@ -26,7 +26,9 @@ body{
     background:
         radial-gradient(1200px 600px at 20% 10%, #1b57a8 0%, #0b2b5b 45%, #071a36 100%),
         radial-gradient(circle at 1px 1px, rgba(255,255,255,0.12) 1px, rgba(0,0,0,0) 1px);
-    background-size: auto, 24px 24px;
+    background-size: 200% 200%, 24px 24px;
+    background-position: 0% 0%, 0 0;
+    animation:bgShift 18s ease infinite;
     color:var(--text);
     text-align:center;
     font-family:Montserrat, Arial, sans-serif;
@@ -39,6 +41,33 @@ body{
     padding:clamp(16px, 3vw, 28px) clamp(16px, 3vw, 28px) clamp(22px, 3.5vw, 34px);
     box-shadow:0 24px 60px rgba(4, 18, 38, 0.35);
     overflow:hidden;
+    position:relative;
+    animation:cardIn 0.5s ease;
+}
+
+.app::before,
+.app::after{
+    content:"";
+    position:absolute;
+    width:260px;
+    height:260px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(255,178,0,0.25) 0%, rgba(255,178,0,0) 70%);
+    filter:blur(6px);
+    opacity:0.7;
+    pointer-events:none;
+    animation:floatBlob 10s ease-in-out infinite;
+}
+
+.app::before{
+    top:-140px;
+    right:-80px;
+}
+
+.app::after{
+    bottom:-160px;
+    left:-90px;
+    animation-delay:2s;
 }
 
 .titulo{
@@ -141,6 +170,10 @@ body{
     box-shadow:0 10px 20px rgba(255, 178, 0, 0.25);
 }
 
+.controls button:active{
+    transform:translateY(0);
+}
+
 .controls button::after{
     content:"";
     position:absolute;
@@ -164,6 +197,16 @@ body{
     margin:22px auto 0;
     border-radius:0;
     overflow:hidden;
+    animation:floatCard 8s ease-in-out infinite;
+}
+
+.contenedor::before{
+    content:"";
+    position:absolute;
+    inset:-20%;
+    background:radial-gradient(circle at 30% 20%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 55%);
+    opacity:0.6;
+    pointer-events:none;
 }
 
 .counter{
@@ -227,6 +270,37 @@ body{
     100%{transform:scale(1);}
 }
 
+@keyframes bgShift{
+    0%{background-position:0% 0%, 0 0;}
+    50%{background-position:100% 100%, 0 0;}
+    100%{background-position:0% 0%, 0 0;}
+}
+
+@keyframes floatBlob{
+    0%{transform:translateY(0) translateX(0) scale(1);}
+    50%{transform:translateY(12px) translateX(-8px) scale(1.05);}
+    100%{transform:translateY(0) translateX(0) scale(1);}
+}
+
+@keyframes floatCard{
+    0%{transform:translateY(0);}
+    50%{transform:translateY(-6px);}
+    100%{transform:translateY(0);}
+}
+
+@keyframes cardIn{
+    from{opacity:0;transform:translateY(8px);}
+    to{opacity:1;transform:translateY(0);}
+}
+
+@media (prefers-reduced-motion: reduce){
+    body,
+    .app,
+    .contenedor{
+        animation:none;
+    }
+}
+
 </style>
 </head>
 
@@ -239,7 +313,7 @@ body{
 
     <div class="controls">
         <label for="nombre">Tu nombre</label>
-        <input id="nombre" placeholder="Tu nombre" autocomplete="off">
+        <input id="nombre" placeholder="Tu nombre" autocomplete="off" maxlength="12">
         <button onclick="generar()">Generar</button>
         <button id="btnDescargar" onclick="descargar()" disabled>Descargar</button>
         <button class="icon-btn" type="button" aria-label="Compartir en historias de Instagram" onclick="compartirInstagram()">
@@ -258,7 +332,7 @@ body{
         <img src="imagen-campaña.png" alt="Imagen de campaña">
         <div class="destello" id="destello"></div>
         <div class="overlay"></div>
-        <div class="nombre" id="nombreTexto">TUNOMBRE</div>
+        <div class="nombre" id="nombreTexto">TU NOMBRE</div>
     </div>
     <div class="counter" aria-live="polite">
         Descargas: <span id="downloadCount">0</span>
@@ -271,6 +345,7 @@ body{
 
 function generar(){
     let nombre = document.getElementById("nombre").value.trim();
+    nombre = nombre.slice(0, 12);
     if (nombre === "") {
         nombre = "CAMILO";
     }
