@@ -151,7 +151,7 @@ body{
     width:100%;
     max-width:640px;
     margin:22px auto 0;
-    border-radius:18px;
+    border-radius:0;
     overflow:hidden;
 }
 
@@ -194,7 +194,7 @@ body{
 .overlay{
     position:absolute;
     inset:0;
-    border-radius:18px;
+    border-radius:0;
     background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.2));
     pointer-events:none;
 }
@@ -272,7 +272,8 @@ async function crearImagen(){
     const contenedor = document.querySelector(".contenedor");
     if (!contenedor) return null;
     try{
-        const canvas = await html2canvas(contenedor, {useCORS:true, scale:3, backgroundColor:null});
+        const escala = Math.min(5, Math.max(2, window.devicePixelRatio || 2));
+        const canvas = await html2canvas(contenedor, {useCORS:true, scale:escala, backgroundColor:null});
         return canvas;
     }catch(err){
         console.error(err);
