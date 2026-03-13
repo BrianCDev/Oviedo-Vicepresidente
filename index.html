@@ -272,7 +272,7 @@ async function crearImagen(){
     const contenedor = document.querySelector(".contenedor");
     if (!contenedor) return null;
     try{
-        const canvas = await html2canvas(contenedor, {useCORS:true, scale:3});
+        const canvas = await html2canvas(contenedor, {useCORS:true, scale:3, backgroundColor:null});
         return canvas;
     }catch(err){
         console.error(err);
