@@ -47,6 +47,7 @@ body{
     margin:4px 0 18px;
     font-size:clamp(22px, 3.2vw, 32px);
     letter-spacing:0.4px;
+    font-weight:800;
 }
 
 .titulo .icon{
@@ -214,7 +215,7 @@ body{
 
 <div class="app">
 
-    <h2 class="titulo"><span class="icon">✦</span>Escribe tu nombre</h2>
+    <h2 class="titulo"><span class="icon">✦</span>Sumemos Juntos</h2>
     <div class="subtitulo">Personaliza tu imagen en un solo clic</div>
 
     <div class="controls">
@@ -279,6 +280,36 @@ async function descargar(){
     link.href = canvas.toDataURL("image/png");
     link.click();
     incrementarDescargas();
+}
+
+async function compartirInstagram(){
+    const canvas = await crearImagen();
+    if (!canvas) return;
+    if (!navigator.canShare || !navigator.share){
+        alert("Para Instagram Stories usa Descargar y comparte desde tu galería.");
+        return;
+    }
+    const blob = await new Promise(r => canvas.toBlob(r, "image/png", 1.0));
+    if (!blob) return;
+    const file = new File([blob], "campana.png", {type:"image/png"});
+    if (!navigator.canShare({files:[file]})){
+        alert("Tu navegador no permite compartir archivos. Usa Descargar y comparte desde tu galería.");
+        return;
+    }
+    try{
+        await navigator.share({
+            files:[file],
+            title:"Mi imagen de campaña",
+            text:"Historia de Instagram"
+        });
+    }catch(err){
+        console.error(err);
+    }
+}
+
+function compartirFacebook(){
+    const url = encodeURIComponent(window.location.href);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, "_blank", "noopener,noreferrer");
 }
 
 function ajustarTexto(){
