@@ -313,7 +313,7 @@ body{
 
     <div class="controls">
         <label for="nombre">Tu nombre</label>
-        <input id="nombre" placeholder="Tu nombre" autocomplete="off" maxlength="12">
+        <input id="nombre" placeholder="Tu nombre" autocomplete="off" maxlength="25">
         <button onclick="generar()">Generar</button>
         <button id="btnDescargar" onclick="descargar()" disabled>Descargar</button>
         <button class="icon-btn" type="button" aria-label="Compartir en historias de Instagram" onclick="compartirInstagram()">
@@ -345,7 +345,7 @@ body{
 
 function generar(){
     let nombre = document.getElementById("nombre").value.trim();
-    nombre = nombre.slice(0, 12);
+    nombre = nombre.slice(0, 25);
     if (nombre === "") {
         nombre = "CAMILO";
     }
@@ -353,6 +353,7 @@ function generar(){
     activarDestello();
     animarTexto();
     habilitarDescarga(true);
+    ajustarTexto();
 }
 
 async function crearImagen(){
@@ -413,8 +414,18 @@ function ajustarTexto(){
     const contenedor = document.querySelector(".contenedor");
     if (!contenedor) return;
     const ancho = contenedor.clientWidth;
-    const size = Math.max(24, Math.min(72, Math.round(ancho * 0.10)));
+    let size = Math.max(24, Math.min(72, Math.round(ancho * 0.10)));
+    const texto = document.getElementById("nombreTexto");
+    const len = texto ? texto.innerText.trim().length : 0;
+    let top = 19;
+    if (len > 12) {
+        const factor = Math.max(0.6, 12 / len);
+        size = Math.max(18, Math.round(size * factor));
+        const extra = Math.min(4, Math.round((1 - factor) * 10));
+        top = 19 + extra;
+    }
     contenedor.style.setProperty("--name-size", size + "px");
+    contenedor.style.setProperty("--name-top", top + "%");
 }
 
 function activarDestello(){
