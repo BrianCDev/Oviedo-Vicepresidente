@@ -402,7 +402,7 @@ async function compartirInstagram(){
     }
     const blob = await new Promise(r => canvas.toBlob(r, "image/png", 1.0));
     if (!blob) return;
-    const file = new File([blob], "campana.png", {type:"image/png"});
+    const file = new File([blob], "paloma-oviedo.png", {type:"image/png"});
     if (!navigator.canShare({files:[file]})){
         alert("Tu navegador no permite compartir archivos. Usa Descargar y comparte desde tu galería.");
         return;
