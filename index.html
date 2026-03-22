@@ -8,9 +8,16 @@
 <style>
 
 :root{
-    --card:#ffffff;
-    --text:#0b1c36;
-    --accent:#ffb200;
+    --bg-1:#050b16;
+    --bg-2:#0b1630;
+    --bg-3:#0e2a52;
+    --glass:rgba(255,255,255,0.08);
+    --glass-strong:rgba(255,255,255,0.12);
+    --text:#e7f0ff;
+    --muted:#a8b6d6;
+    --accent:#48f0ff;
+    --accent-2:#7c5cff;
+    --accent-3:#00ff9d;
 }
 
 *{
@@ -24,69 +31,71 @@ body{
     align-items:center;
     justify-content:center;
     background:
-        radial-gradient(1200px 600px at 20% 10%, #1b57a8 0%, #0b2b5b 45%, #071a36 100%),
-        radial-gradient(circle at 1px 1px, rgba(255,255,255,0.12) 1px, rgba(0,0,0,0) 1px);
-    background-size: 200% 200%, 24px 24px;
-    background-position: 0% 0%, 0 0;
-    animation:bgShift 18s ease infinite;
+        radial-gradient(900px 500px at 15% 10%, #143a72 0%, rgba(20,58,114,0) 60%),
+        radial-gradient(900px 500px at 85% 20%, #2a185a 0%, rgba(42,24,90,0) 60%),
+        linear-gradient(120deg, var(--bg-1), var(--bg-2), var(--bg-3));
     color:var(--text);
     text-align:center;
     font-family:Montserrat, Arial, sans-serif;
+    overflow-x:hidden;
 }
 
 .app{
-    width:min(940px, 94vw);
-    background:linear-gradient(180deg, #ffffff 0%, #f6f8ff 100%);
-    border-radius:24px;
-    padding:clamp(16px, 3vw, 28px) clamp(16px, 3vw, 28px) clamp(22px, 3.5vw, 34px);
-    box-shadow:0 24px 60px rgba(4, 18, 38, 0.35);
+    width:min(980px, 94vw);
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04)),
+        radial-gradient(600px 300px at 10% 0%, rgba(72,240,255,0.15), rgba(72,240,255,0) 60%);
+    border-radius:28px;
+    padding:clamp(18px, 3.5vw, 32px) clamp(18px, 3.5vw, 32px) clamp(24px, 4vw, 36px);
+    box-shadow:
+        0 30px 80px rgba(4, 18, 38, 0.55),
+        inset 0 0 0 1px rgba(255,255,255,0.08);
     overflow:hidden;
     position:relative;
-    animation:cardIn 0.5s ease;
+    backdrop-filter:blur(10px) saturate(140%);
+    animation:cardIn 0.6s ease;
 }
 
 .app::before,
 .app::after{
     content:"";
     position:absolute;
-    width:260px;
-    height:260px;
+    width:340px;
+    height:340px;
     border-radius:50%;
-    background:radial-gradient(circle, rgba(255,178,0,0.25) 0%, rgba(255,178,0,0) 70%);
-    filter:blur(6px);
-    opacity:0.7;
+    background:radial-gradient(circle, rgba(124,92,255,0.22) 0%, rgba(124,92,255,0) 70%);
+    filter:blur(10px);
+    opacity:0.8;
     pointer-events:none;
-    animation:floatBlob 10s ease-in-out infinite;
+    animation:floatBlob 12s ease-in-out infinite;
 }
 
 .app::before{
-    top:-140px;
-    right:-80px;
+    top:-180px;
+    right:-120px;
 }
 
 .app::after{
-    bottom:-160px;
-    left:-90px;
-    animation-delay:2s;
+    bottom:-200px;
+    left:-140px;
+    background:radial-gradient(circle, rgba(0,255,157,0.18) 0%, rgba(0,255,157,0) 70%);
+    animation-delay:3s;
 }
 
 .titulo{
     margin:4px 0 18px;
-    font-size:clamp(22px, 3.2vw, 32px);
-    letter-spacing:0.4px;
+    font-size:clamp(24px, 3.5vw, 38px);
+    letter-spacing:1.4px;
     font-weight:800;
-}
-
-.titulo .icon{
-    display:inline-block;
-    margin-right:8px;
-    transform:translateY(1px);
+    text-transform:uppercase;
+    color:#f7fbff;
+    text-shadow:0 0 18px rgba(72,240,255,0.25);
 }
 
 .subtitulo{
     margin:-10px 0 16px;
-    font-size:clamp(12px, 2.1vw, 15px);
-    color:#5b6b88;
+    font-size:clamp(12px, 2.2vw, 15px);
+    color:var(--muted);
 }
 
 .controls{
@@ -104,25 +113,27 @@ body{
 .controls input{
     padding:12px 14px;
     font-size:16px;
-    border-radius:12px;
-    border:2px solid #e2e6ef;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,0.14);
     min-width:220px;
     outline:none;
     transition:border-color 0.2s ease, box-shadow 0.2s ease;
+    background:rgba(6,10,20,0.55);
+    color:var(--text);
 }
 
 .controls input:focus{
-    border-color:#6aa3ff;
-    box-shadow:0 0 0 4px rgba(106, 163, 255, 0.2);
+    border-color:var(--accent);
+    box-shadow:0 0 0 4px rgba(72, 240, 255, 0.2);
 }
 
 .controls button{
     padding:12px 18px;
     font-size:16px;
-    border-radius:12px;
+    border-radius:14px;
     border:0;
-    background:var(--accent);
-    color:#1f1f1f;
+    background:linear-gradient(120deg, var(--accent), var(--accent-2));
+    color:#06121f;
     font-weight:bold;
     cursor:pointer;
     transition:transform 0.15s ease, box-shadow 0.2s ease;
@@ -145,8 +156,9 @@ body{
     width:46px;
     height:46px;
     padding:0;
-    background:#f1f5ff;
-    border-radius:12px;
+    background:rgba(255,255,255,0.08);
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,0.14);
 }
 
 .controls .icon-btn::after{
@@ -155,19 +167,19 @@ body{
 
 .controls .icon-btn:hover{
     transform:translateY(-1px);
-    box-shadow:0 8px 18px rgba(31, 57, 102, 0.18);
-    background:#e7eefc;
+    box-shadow:0 10px 22px rgba(72, 240, 255, 0.18);
+    background:rgba(255,255,255,0.12);
 }
 
 .controls .icon-btn svg{
     width:22px;
     height:22px;
-    fill:#13294b;
+    fill:#e7f0ff;
 }
 
 .controls button:hover{
     transform:translateY(-1px);
-    box-shadow:0 10px 20px rgba(255, 178, 0, 0.25);
+    box-shadow:0 12px 26px rgba(72, 240, 255, 0.25);
 }
 
 .controls button:active{
@@ -198,6 +210,8 @@ body{
     border-radius:0;
     overflow:hidden;
     animation:floatCard 8s ease-in-out infinite;
+    box-shadow:0 18px 40px rgba(5, 10, 24, 0.6);
+    border:1px solid rgba(255,255,255,0.08);
 }
 
 .contenedor::before{
@@ -212,7 +226,7 @@ body{
 .counter{
     margin-top:14px;
     font-size:clamp(13px, 2.1vw, 15px);
-    color:#5b6b88;
+    color:var(--muted);
 }
 
 .contenedor img{
@@ -230,6 +244,7 @@ body{
     color:white;
     letter-spacing:1px;
     animation:fadePop 0.25s ease;
+    text-shadow:0 4px 18px rgba(0,0,0,0.45);
 }
 
 .nombre.animar{
@@ -239,7 +254,7 @@ body{
 .destello{
     position:absolute;
     inset:-40%;
-    background:radial-gradient(circle at 30% 30%, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 60%);
+    background:radial-gradient(circle at 30% 30%, rgba(72,240,255,0.35) 0%, rgba(72,240,255,0) 60%);
     opacity:0;
     pointer-events:none;
     transition:opacity 0.4s ease;
@@ -249,7 +264,7 @@ body{
     position:absolute;
     inset:0;
     border-radius:0;
-    background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.2));
+    background:linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.25));
     pointer-events:none;
 }
 
@@ -270,12 +285,6 @@ body{
     100%{transform:scale(1);}
 }
 
-@keyframes bgShift{
-    0%{background-position:0% 0%, 0 0;}
-    50%{background-position:100% 100%, 0 0;}
-    100%{background-position:0% 0%, 0 0;}
-}
-
 @keyframes floatBlob{
     0%{transform:translateY(0) translateX(0) scale(1);}
     50%{transform:translateY(12px) translateX(-8px) scale(1.05);}
@@ -294,7 +303,6 @@ body{
 }
 
 @media (prefers-reduced-motion: reduce){
-    body,
     .app,
     .contenedor{
         animation:none;
@@ -315,7 +323,7 @@ body{
 <div class="app">
 
     <h2 class="titulo">SUMEMOS JUNTOS</h2>
-    <div class="subtitulo">Personaliza tu imagen en un solo clic</div>
+    <div class="subtitulo">Crea tu imagen de apoyo, descárgala y compártela para sumar a la campaña.</div>
 
     <div class="controls">
         <label for="nombre">Tu nombre</label>
