@@ -98,6 +98,16 @@ body{
     color:var(--muted);
 }
 
+.ayuda{
+    margin:-6px 0 16px;
+    font-size:clamp(12px, 2.1vw, 14px);
+    color:#c7d4ef;
+}
+
+.ayuda strong{
+    color:#ffffff;
+}
+
 .controls{
     display:flex;
     gap:10px;
@@ -128,17 +138,23 @@ body{
 }
 
 .controls button{
-    padding:12px 18px;
+    padding:12px 20px;
     font-size:16px;
-    border-radius:14px;
-    border:0;
-    background:linear-gradient(120deg, var(--accent), var(--accent-2));
-    color:#06121f;
-    font-weight:bold;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.18);
+    background:
+        linear-gradient(120deg, rgba(72,240,255,0.95), rgba(124,92,255,0.9)),
+        radial-gradient(120px 60px at 15% 10%, rgba(255,255,255,0.35), rgba(255,255,255,0));
+    color:#07131f;
+    font-weight:800;
+    letter-spacing:0.6px;
     cursor:pointer;
-    transition:transform 0.15s ease, box-shadow 0.2s ease;
+    transition:transform 0.18s ease, box-shadow 0.25s ease, filter 0.25s ease;
     position:relative;
     overflow:hidden;
+    box-shadow:
+        0 12px 30px rgba(72, 240, 255, 0.25),
+        inset 0 0 0 1px rgba(255,255,255,0.2);
 }
 
 .controls button:disabled{
@@ -153,12 +169,15 @@ body{
 }
 
 .controls .icon-btn{
-    width:46px;
-    height:46px;
+    width:48px;
+    height:48px;
     padding:0;
-    background:rgba(255,255,255,0.08);
-    border-radius:14px;
-    border:1px solid rgba(255,255,255,0.14);
+    background:
+        radial-gradient(120px 60px at 20% 10%, rgba(255,255,255,0.18), rgba(255,255,255,0) 60%),
+        linear-gradient(140deg, rgba(72,240,255,0.2), rgba(124,92,255,0.18));
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,0.18);
+    box-shadow:0 10px 22px rgba(7, 18, 32, 0.35);
 }
 
 .controls .icon-btn::after{
@@ -166,40 +185,74 @@ body{
 }
 
 .controls .icon-btn:hover{
-    transform:translateY(-1px);
-    box-shadow:0 10px 22px rgba(72, 240, 255, 0.18);
-    background:rgba(255,255,255,0.12);
+    transform:translateY(-2px) scale(1.02);
+    box-shadow:
+        0 12px 26px rgba(72, 240, 255, 0.2),
+        0 0 12px rgba(124, 92, 255, 0.3);
 }
 
 .controls .icon-btn svg{
     width:22px;
     height:22px;
     fill:#e7f0ff;
+    filter:drop-shadow(0 0 6px rgba(72,240,255,0.6));
 }
 
 .controls button:hover{
-    transform:translateY(-1px);
-    box-shadow:0 12px 26px rgba(72, 240, 255, 0.25);
+    transform:translateY(-2px);
+    filter:saturate(120%);
+    box-shadow:
+        0 18px 36px rgba(124, 92, 255, 0.35),
+        0 0 18px rgba(72, 240, 255, 0.35);
 }
 
 .controls button:active{
     transform:translateY(0);
+    filter:saturate(105%);
 }
 
 .controls button::after{
     content:"";
     position:absolute;
-    top:-50%;
-    left:-30%;
-    width:40%;
-    height:200%;
-    background:rgba(255,255,255,0.35);
-    transform:rotate(20deg);
-    transition:transform 0.5s ease;
+    inset:0;
+    background:
+        radial-gradient(120px 60px at -10% 50%, rgba(255,255,255,0.5), rgba(255,255,255,0) 60%),
+        linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 45%, rgba(255,255,255,0) 70%);
+    transform:translateX(-120%);
+    transition:transform 0.6s ease;
+    mix-blend-mode:screen;
 }
 
 .controls button:hover::after{
-    transform:translateX(240%) rotate(20deg);
+    transform:translateX(120%);
+}
+
+.controls button::before{
+    content:"";
+    position:absolute;
+    inset:-2px;
+    border-radius:999px;
+    padding:2px;
+    background:conic-gradient(from 140deg, rgba(72,240,255,0.9), rgba(124,92,255,0.9), rgba(0,255,157,0.8), rgba(72,240,255,0.9));
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;
+    mask-composite:exclude;
+    opacity:0;
+    transition:opacity 0.3s ease;
+    pointer-events:none;
+}
+
+.controls button:hover::before{
+    opacity:1;
+}
+
+.share-hint{
+    margin:10px 0 0;
+    font-size:clamp(12px, 2.1vw, 14px);
+    color:#c7d4ef;
+    min-height:18px;
 }
 
 .contenedor{
@@ -324,6 +377,7 @@ body{
 
     <h2 class="titulo">SUMEMOS JUNTOS</h2>
     <div class="subtitulo">Crea tu imagen de apoyo, descárgala y compártela para sumar a la campaña.</div>
+    <div class="ayuda">1) Escribe tu nombre. 2) Pulsa <strong>Generar</strong>. 3) Descarga o comparte.</div>
 
     <div class="controls">
         <label for="nombre">Tu nombre</label>
@@ -341,6 +395,7 @@ body{
             </svg>
         </button>
     </div>
+    <div class="share-hint" id="shareHint"></div>
 
     <div class="contenedor">
         <img src="imagen-campaña.png" alt="Imagen de campaña">
@@ -401,18 +456,47 @@ async function descargar(){
     incrementarDescargas();
 }
 
+function getDevice(){
+    const ua = navigator.userAgent || "";
+    if (/android/i.test(ua)) return "android";
+    if (/iphone|ipad|ipod/i.test(ua)) return "ios";
+    return "pc";
+}
+
+function setShareHint(msg){
+    const el = document.getElementById("shareHint");
+    if (!el) return;
+    el.textContent = msg || "";
+}
+
 async function compartirInstagram(){
     const canvas = await crearImagen();
     if (!canvas) return;
+    const device = getDevice();
+    setShareHint("");
     if (!navigator.canShare || !navigator.share){
-        alert("Para Instagram Stories usa Descargar y comparte desde tu galería.");
+        descargar();
+        if (device === "android") {
+            setShareHint("En Android: abre Instagram, crea una historia y elige la imagen descargada.");
+        } else if (device === "ios") {
+            setShareHint("En iPhone: abre Fotos, comparte y elige Instagram Stories.");
+        } else {
+            setShareHint("En PC: descarga y comparte desde tu celular.");
+        }
         return;
     }
     const blob = await new Promise(r => canvas.toBlob(r, "image/png", 1.0));
     if (!blob) return;
     const file = new File([blob], "paloma-oviedo.png", {type:"image/png"});
     if (!navigator.canShare({files:[file]})){
-        alert("Tu navegador no permite compartir archivos. Usa Descargar y comparte desde tu galería.");
+        descargar();
+        if (device === "android") {
+            setShareHint("En Android: abre Instagram, crea una historia y elige la imagen descargada.");
+        } else if (device === "ios") {
+            setShareHint("En iPhone: abre Fotos, comparte y elige Instagram Stories.");
+        } else {
+            setShareHint("En PC: descarga y comparte desde tu celular.");
+        }
         return;
     }
     try{
@@ -421,6 +505,9 @@ async function compartirInstagram(){
             title:"Mi imagen de campaña",
             text:"Historia de Instagram"
         });
+        if (device === "android" || device === "ios") {
+            setShareHint("Selecciona Instagram en el panel para publicarla en Stories.");
+        }
     }catch(err){
         console.error(err);
     }
